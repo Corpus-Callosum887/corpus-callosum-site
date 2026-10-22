@@ -1,4 +1,4 @@
-/* Corpus Callosum + Hello Faces site — v01 (Oct 21, 2026)
+/* Corpus Callosum + Hello Faces site — v04 (light only); first built v01 (Oct 21, 2026)
    Layout: two "hemispheres" (logic + play) bridged in the middle; reading pages are one calm 680px column.
    Colors come from the Hello Faces app (theme.ts) so the site and the game feel like one family. */
 :root {
@@ -15,18 +15,8 @@
   --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --font-body: "Figtree", "Avenir Next", "Segoe UI", system-ui, sans-serif;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #17121F; --card: #211A2C; --ink: #F6EFE7; --sub: #BFB0A2; --line: #362B45;
-    --grape: #9B7BFF; --grape-ink: #B9A2FF; --joy: #FFC23D; --coral: #FF8466; --chip: #2C2240;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #17121F; --card: #211A2C; --ink: #F6EFE7; --sub: #BFB0A2; --line: #362B45;
-  --grape: #9B7BFF; --grape-ink: #B9A2FF; --joy: #FFC23D; --coral: #FF8466; --chip: #2C2240;
-  color-scheme: dark;
-}
+/* v04: always the warm cream light look (the site no longer switches to dark purple in dark mode) */
+:root { color-scheme: light; }
 
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
