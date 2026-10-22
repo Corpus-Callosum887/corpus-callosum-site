@@ -1,0 +1,152 @@
+/* Corpus Callosum + Hello Faces site — v01 (Oct 21, 2026)
+   Layout: two "hemispheres" (logic + play) bridged in the middle; reading pages are one calm 680px column.
+   Colors come from the Hello Faces app (theme.ts) so the site and the game feel like one family. */
+:root {
+  --bg: #FFF8F0;          /* app bg */
+  --card: #FFFFFF;
+  --ink: #2B2118;         /* app ink */
+  --sub: #6E5E50;         /* app sub, a touch darker for web contrast */
+  --line: #EFE3D6;        /* app line */
+  --grape: #7B4DFF;       /* Electric Grape, app accent */
+  --grape-ink: #5B2FE0;   /* grape for text on light ground */
+  --joy: #FFC23D;         /* mood: joy */
+  --coral: #FF6B4A;       /* the original Hello Faces coral */
+  --chip: #F4ECFF;
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Figtree", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17121F; --card: #211A2C; --ink: #F6EFE7; --sub: #BFB0A2; --line: #362B45;
+    --grape: #9B7BFF; --grape-ink: #B9A2FF; --joy: #FFC23D; --coral: #FF8466; --chip: #2C2240;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #17121F; --card: #211A2C; --ink: #F6EFE7; --sub: #BFB0A2; --line: #362B45;
+  --grape: #9B7BFF; --grape-ink: #B9A2FF; --joy: #FFC23D; --coral: #FF8466; --chip: #2C2240;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+}
+img { max-width: 100%; height: auto; }
+a { color: var(--grape-ink); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--grape); outline-offset: 3px; border-radius: 6px; }
+
+.wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.read { max-width: 680px; }
+
+/* Header */
+.site-head { border-bottom: 1px solid var(--line); }
+.site-head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+.brand svg { flex: none; }
+.brand-name { font-family: var(--font-display); font-weight: 800; font-size: 19px; letter-spacing: -0.01em; }
+.nav { display: flex; gap: 18px; flex-wrap: wrap; font-weight: 600; font-size: 15px; }
+.nav a { color: var(--sub); text-decoration: none; }
+.nav a:hover, .nav a[aria-current="page"] { color: var(--ink); }
+
+/* Type */
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.12; letter-spacing: -0.02em; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; }
+h2 { font-size: clamp(24px, 3.4vw, 32px); font-weight: 800; }
+h3 { font-size: 20px; font-weight: 700; }
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sub); margin: 0; }
+.lead { font-size: 20px; color: var(--sub); max-width: 34em; margin: 0; }
+p { margin: 0; }
+.stack { display: grid; gap: 16px; }
+.stack-lg { display: grid; gap: 28px; }
+main { padding-block: 48px 72px; }
+
+/* Company hero: two hemispheres joined by a bridge */
+.hemis { display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; gap: 0; margin-top: 8px; }
+.hemi { padding: 28px; border-radius: 28px; min-width: 0; display: grid; gap: 10px; align-content: start; }
+.hemi.left { background: var(--grape); color: #fff; border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+.hemi.right { background: var(--joy); color: #2B2118; border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+.hemi h3 { font-size: 22px; }
+.hemi p { font-size: 16px; opacity: 0.92; }
+.bridge { width: 28px; display: grid; align-items: center; }
+.bridge span { display: block; height: 44%; background: repeating-linear-gradient(180deg, var(--ink) 0 6px, transparent 6px 12px); width: 4px; margin: 0 auto; border-radius: 2px; opacity: 0.35; }
+
+/* Game card */
+.game-card { display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; background: var(--card); border: 2px solid var(--line); border-radius: 24px; padding: 22px; text-decoration: none; color: var(--ink); }
+.game-card:hover { border-color: var(--grape); }
+.game-card img { width: 96px; height: 96px; border-radius: 22px; }
+.game-card .stack { gap: 6px; min-width: 0; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--chip); color: var(--grape-ink); width: fit-content; }
+
+/* Hello Faces page */
+.hf-hero { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+.hf-hero img { width: 132px; height: 132px; border-radius: 30px; box-shadow: 0 10px 30px rgba(91, 47, 224, 0.25); }
+.moods { display: flex; flex-wrap: wrap; gap: 10px; font-size: 30px; line-height: 1; }
+.moods span { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 16px; background: var(--card); border: 2px solid var(--line); }
+.verbs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.verb { background: var(--card); border: 2px solid var(--line); border-radius: 20px; padding: 20px; display: grid; gap: 6px; align-content: start; }
+.verb b { font-family: var(--font-display); font-size: 21px; }
+.links { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 999px; border: 2px solid var(--grape); color: var(--grape-ink); font-weight: 700; text-decoration: none; font-size: 15px; }
+.btn.solid { background: var(--grape); color: #fff; }
+
+/* Reading pages */
+.doc h2 { font-size: 24px; margin-top: 12px; }
+.doc ul, .doc ol { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; }
+.doc .meta { font-size: 14px; color: var(--sub); }
+.note { background: var(--card); border: 2px solid var(--line); border-radius: 18px; padding: 18px 20px; }
+.note.grape { border-color: var(--grape); }
+.steps { counter-reset: s; list-style: none; padding: 0 !important; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; }
+.steps li::before { content: counter(s); width: 30px; height: 30px; border-radius: 50%; background: var(--grape); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: 15px; }
+details { background: var(--card); border: 2px solid var(--line); border-radius: 16px; padding: 14px 18px; }
+details summary { cursor: pointer; font-weight: 700; }
+details[open] summary { margin-bottom: 8px; }
+.email { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 15px; background: var(--chip); padding: 2px 8px; border-radius: 6px; word-break: break-all; }
+
+/* Footer */
+.site-foot { border-top: 1px solid var(--line); color: var(--sub); font-size: 14px; }
+.site-foot .wrap { display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; padding-block: 22px; }
+.site-foot nav { display: flex; gap: 16px; flex-wrap: wrap; }
+.site-foot a { color: var(--sub); }
+
+@media (max-width: 720px) {
+  .hemis { grid-template-columns: 1fr; gap: 0; }
+  .bridge { width: auto; height: 22px; }
+  .bridge span { height: 4px; width: 44%; background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 12px); }
+  .hemi.left { border-radius: 28px 28px 8px 8px; }
+  .hemi.right { border-radius: 8px 8px 28px 28px; }
+  .verbs { grid-template-columns: 1fr; }
+  .hf-hero { grid-template-columns: 1fr; }
+  .hf-hero img { width: 104px; height: 104px; }
+  .game-card { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .game-card, .btn { transition: border-color 0.15s, transform 0.15s; }
+  .game-card:hover { transform: translateY(-2px); }
+}
+
+/* v02: Corpus Callosum mark + Hello Faces child bar */
+.cc-mark { flex: none; }
+.brand-name { text-transform: uppercase; letter-spacing: 0.14em; font-size: 15px; font-weight: 700; }
+.child-bar { background: var(--chip); border-bottom: 1px solid var(--line); }
+.child-bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap; padding-block: 10px; }
+.child-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+.child-brand img { border-radius: 8px; }
+.child-brand span { font-family: var(--font-display); font-weight: 800; font-size: 17px; }
+.child-brand small { color: var(--sub); font-size: 13px; }
+.subnav { display: flex; gap: 6px; flex-wrap: wrap; font-size: 14px; font-weight: 600; }
+.subnav a { color: var(--sub); text-decoration: none; padding: 5px 10px; border-radius: 999px; }
+.subnav a:hover { color: var(--ink); }
+.subnav a[aria-current="page"] { background: var(--card); color: var(--grape-ink); }
