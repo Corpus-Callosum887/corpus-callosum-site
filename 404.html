@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hello Faces</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="A friend invited you to Hello Faces, the game about faces hiding in everyday things.">
+<meta property="og:title" content="Hello Faces">
+<meta property="og:description" content="A friend sent you something from Hello Faces 😂">
+<meta property="og:image" content="https://corpuscallosum.studio/assets/hf-icon.png">
+<link rel="icon" type="image/png" href="/assets/hf-favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="/styles.css">
+<style>
+/* Invite pages (v07): corpuscallosum.studio/l/CODE (a laugh) and /s/CODE (a squad invite).
+   GitHub Pages serves this page for any address it doesn't know, so it reads the address and fills itself in. */
+.invite { max-width: 560px; margin: 0 auto; padding: 28px 0 56px; display: grid; gap: 18px; }
+.invite h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 7vw, 40px); line-height: 1.1; margin: 0; }
+.face { width: 220px; height: 220px; border-radius: 28px; overflow: hidden; border: 6px solid var(--joy); margin: 4px auto 0; background: #F4ECE2; display: grid; place-items: center; font-size: 96px; }
+.face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mood { display: inline-block; padding: 4px 14px; border-radius: 999px; font-weight: 800; color: #fff; font-size: 15px; justify-self: center; }
+.card { background: var(--card); border: 2px solid var(--line); border-radius: 22px; padding: 20px; display: grid; gap: 12px; }
+.step { display: flex; gap: 12px; align-items: flex-start; }
+.num { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--grape); color: #fff; font-weight: 800; display: grid; place-items: center; font-size: 15px; }
+.code { font-family: var(--font-display); font-weight: 800; font-size: 40px; letter-spacing: 0.18em; text-align: center; padding: 10px; border: 2px dashed var(--grape); border-radius: 16px; color: var(--ink); user-select: all; }
+.where { font-size: 14px; color: var(--sub); text-align: center; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.btn { cursor: pointer; background: none; font-family: inherit; }
+.muted { color: var(--sub); }
+.center { text-align: center; }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+<a class="brand" href="/"><svg class="cc-mark" width="66" height="36" viewBox="0 0 120 64" role="img" aria-label="Corpus Callosum logo"><defs><linearGradient id="ccfib" x1="40" y1="0" x2="80" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="var(--grape)"/><stop offset="1" stop-color="var(--joy)"/></linearGradient></defs><g fill="none" stroke="url(#ccfib)" stroke-width="1.3" stroke-linecap="round"><path d="M41 20 C55 30.56 65 30.56 79 20"/><path d="M41 23 C55 30.92 65 30.92 79 23"/><path d="M41 26 C55 31.28 65 31.28 79 26"/><path d="M41 29 C55 31.64 65 31.64 79 29"/><path d="M41 32 C55 32.00 65 32.00 79 32"/><path d="M41 35 C55 32.36 65 32.36 79 35"/><path d="M41 38 C55 32.72 65 32.72 79 38"/><path d="M41 41 C55 33.08 65 33.08 79 41"/><path d="M41 44 C55 33.44 65 33.44 79 44"/></g><path d="M48.85 17.86 A22 22 0 1 0 48.85 46.14" fill="none" stroke="var(--grape)" stroke-width="11" stroke-linecap="round"/><path d="M71.15 17.86 A22 22 0 1 1 71.15 46.14" fill="none" stroke="var(--joy)" stroke-width="11" stroke-linecap="round"/></svg><span class="brand-name">Corpus Callosum</span></a>
+<nav class="nav" aria-label="Main"><a href="/">Studio</a><a href="/hello-faces/">Hello Faces</a></nav>
+</div></header>
+<main><div class="wrap">
+  <div id="app" class="invite">
+    <p class="center muted" id="loading"></p>
+  </div>
+</div></main>
+<footer class="site-foot"><div class="wrap">
+<span>&copy; 2026 Corpus Callosum LLC &middot; Washington, USA &middot; Hello Faces is a game by Corpus Callosum LLC</span>
+<nav aria-label="Footer"><a href="/hello-faces/privacy.html">Privacy</a><a href="/hello-faces/support.html">Support</a></nav>
+</div></footer>
+<script>
+// ---- Settings (change these at launch) ----
+const APP_STORE_URL = '';   // e.g. https://apps.apple.com/app/id0000000000 once the app is live
+const PLAY_URL = '';        // e.g. https://play.google.com/store/apps/details?id=com.jamespayne.hellofaces
+const SUPABASE_URL = 'https://xkjtdfdkdolmhqmrrotc.supabase.co';
+const SUPABASE_KEY = 'sb_publishable__F44T0-upC234my4rxIsog_qoSmB3po'; // the public key the app already uses
+const MOOD_COLOR = { joy: '#FFC23D', rage: '#E5484D', shock: '#8E6CEF', sorrow: '#3E8BD8', mischief: '#2FB37A', love: '#F271A8', smug: '#D98A2B', worry: '#6B9E9A' };
+const MOOD_EMOJI = { joy: '😄', rage: '😠', shock: '😮', sorrow: '😢', mischief: '😜', love: '🥰', smug: '😏', worry: '😟' };
+const I18N = {"words": {"en": {"laughTitle": "{name} passed you a laugh! 😂", "someone": "Someone", "laughBody": "Keep it going: open it in Hello Faces, then catch a face in the mood “{mood}” within 24 hours. Then pass it to up to 3 friends and watch it travel the world.", "reach": "This laugh has reached {p} people in {c} countries so far.", "taken": "Someone already opened this laugh link. Ask your friend to send you a new one!", "expired": "This laugh link wasn’t opened in time, so it stopped working. Ask your friend to send a new one!", "squadTitle": "You’re invited to join “{name}”! 🤝", "squadBody": "A Face Squad is 2 to 6 players who share one mission each week in Hello Faces. Finish it together to grow your streak.", "seats": "{n} of 6 players so far", "full": "This squad is full (6 players).", "notFound": "We couldn’t find this link. Check the code with your friend.", "step1": "Get Hello Faces", "soon": "Coming to the App Store and Google Play on December 10, 2026.", "step2": "Then tap this link again on your phone. Or type this code in the app:", "whereLaugh": "Me → 😂 Pass the Laugh → Got a laugh code?", "whereSquad": "Me → 🤝 Face Squad → Got a code?", "copy": "Copy code", "copied": "Copied!", "openApp": "Open in Hello Faces", "safety": "Hello Faces has no chat. Friends see only approved faces, player names and emoji.", "loading": "Loading…", "offline": "We couldn’t load this right now. Check your connection and try again.", "what": "What’s Hello Faces? ›", "pageGone": "This page doesn’t exist.", "home": "Go to the home page ›"}, "fr": {"laughTitle": "{name} t’a passé un rire ! 😂", "someone": "Quelqu’un", "laughBody": "Fais-le continuer : ouvre-le dans Hello Faces, puis attrape un visage d’humeur « {mood} » en 24 heures. Ensuite, passe-le à 3 amis et regarde-le faire le tour du monde.", "reach": "Ce rire a déjà touché {p} personnes dans {c} pays.", "taken": "Quelqu’un a déjà ouvert ce lien. Demande à ton ami de t’en envoyer un nouveau !", "expired": "Ce lien n’a pas été ouvert à temps et ne marche plus. Demande-en un nouveau à ton ami !", "squadTitle": "Tu es invité dans l’équipe « {name} » ! 🤝", "squadBody": "Une équipe, c’est 2 à 6 joueurs qui partagent une mission par semaine dans Hello Faces. Réussissez-la ensemble pour allonger votre série.", "seats": "{n} joueurs sur 6 pour l’instant", "full": "Cette équipe est complète (6 joueurs).", "notFound": "Lien introuvable. Vérifie le code avec ton ami.", "step1": "Installe Hello Faces", "soon": "Arrive sur l’App Store et Google Play le 10 décembre 2026.", "step2": "Puis touche à nouveau ce lien sur ton téléphone. Ou tape ce code dans l’app :", "whereLaugh": "Moi → 😂 Passe le rire → Tu as un code de rire ?", "whereSquad": "Moi → 🤝 Équipe → Tu as un code ?", "copy": "Copier", "copied": "Copié !", "openApp": "Ouvrir dans Hello Faces", "safety": "Hello Faces n’a pas de chat. Tes amis ne voient que des visages approuvés, des noms de joueurs et des emoji.", "loading": "Chargement…", "offline": "Impossible de charger pour l’instant. Vérifie ta connexion et réessaie.", "what": "C’est quoi, Hello Faces ? ›", "pageGone": "Cette page n’existe pas.", "home": "Aller à l’accueil ›"}, "es": {"laughTitle": "¡{name} te pasó una risa! 😂", "someone": "Alguien", "laughBody": "Mantenla viva: ábrela en Hello Faces y atrapa una cara del ánimo “{mood}” en 24 horas. Luego pásala a hasta 3 amigos y mírala viajar por el mundo.", "reach": "Esta risa ya llegó a {p} personas en {c} países.", "taken": "Alguien ya abrió este enlace. ¡Pídele a tu amigo que te mande otro!", "expired": "Este enlace no se abrió a tiempo y dejó de funcionar. ¡Pídele otro a tu amigo!", "squadTitle": "¡Te invitaron al escuadrón “{name}”! 🤝", "squadBody": "Un escuadrón son de 2 a 6 jugadores que comparten una misión cada semana en Hello Faces. Complétenla juntos para alargar la racha.", "seats": "{n} de 6 jugadores por ahora", "full": "Este escuadrón está lleno (6 jugadores).", "notFound": "No encontramos este enlace. Revisa el código con tu amigo.", "step1": "Consigue Hello Faces", "soon": "Llega al App Store y Google Play el 10 de diciembre de 2026.", "step2": "Luego toca este enlace otra vez en tu teléfono. O escribe este código en la app:", "whereLaugh": "Yo → 😂 Pasa la risa → ¿Tienes un código de risa?", "whereSquad": "Yo → 🤝 Escuadrón → ¿Tienes un código?", "copy": "Copiar", "copied": "¡Copiado!", "openApp": "Abrir en Hello Faces", "safety": "Hello Faces no tiene chat. Tus amigos solo ven caras aprobadas, nombres de jugadores y emoji.", "loading": "Cargando…", "offline": "No se pudo cargar ahora. Revisa tu conexión e inténtalo de nuevo.", "what": "¿Qué es Hello Faces? ›", "pageGone": "Esta página no existe.", "home": "Ir al inicio ›"}, "de": {"laughTitle": "{name} hat dir einen Lacher geschickt! 😂", "someone": "Jemand", "laughBody": "Halte ihn am Laufen: Öffne ihn in Hello Faces und fang innerhalb von 24 Stunden ein Gesicht in der Stimmung „{mood}“. Dann gib ihn an bis zu 3 Freunde weiter und sieh zu, wie er um die Welt reist.", "reach": "Dieser Lacher hat schon {p} Menschen in {c} Ländern erreicht.", "taken": "Jemand hat diesen Link schon geöffnet. Bitte deinen Freund um einen neuen!", "expired": "Dieser Link wurde nicht rechtzeitig geöffnet und funktioniert nicht mehr. Bitte deinen Freund um einen neuen!", "squadTitle": "Du bist eingeladen ins Squad „{name}“! 🤝", "squadBody": "Ein Squad sind 2 bis 6 Leute, die in Hello Faces jede Woche eine Mission teilen. Schafft sie gemeinsam, um eure Serie zu verlängern.", "seats": "Bisher {n} von 6 Leuten", "full": "Dieses Squad ist voll (6 Leute).", "notFound": "Dieser Link wurde nicht gefunden. Prüf den Code mit deinem Freund.", "step1": "Hol dir Hello Faces", "soon": "Ab 10. Dezember 2026 im App Store und bei Google Play.", "step2": "Tippe dann noch mal auf diesen Link auf deinem Handy. Oder gib diesen Code in der App ein:", "whereLaugh": "Ich → 😂 Lach weiter → Hast du einen Lacher-Code?", "whereSquad": "Ich → 🤝 Squad → Hast du einen Code?", "copy": "Kopieren", "copied": "Kopiert!", "openApp": "In Hello Faces öffnen", "safety": "Hello Faces hat keinen Chat. Freunde sehen nur freigegebene Gesichter, Spielernamen und Emoji.", "loading": "Lädt…", "offline": "Das konnte gerade nicht geladen werden. Prüf deine Verbindung und versuch es noch mal.", "what": "Was ist Hello Faces? ›", "pageGone": "Diese Seite gibt es nicht.", "home": "Zur Startseite ›"}, "it": {"laughTitle": "{name} ti ha passato una risata! 😂", "someone": "Qualcuno", "laughBody": "Tienila viva: aprila in Hello Faces e cattura una faccia dell’umore “{mood}” entro 24 ore. Poi passala ad altri 3 amici e guardala girare il mondo.", "reach": "Questa risata ha già raggiunto {p} persone in {c} paesi.", "taken": "Qualcuno ha già aperto questo link. Chiedi al tuo amico di mandartene uno nuovo!", "expired": "Questo link non è stato aperto in tempo e non funziona più. Chiedine uno nuovo al tuo amico!", "squadTitle": "Sei invitato nella squadra “{name}”! 🤝", "squadBody": "Una squadra è formata da 2 a 6 giocatori che condividono una missione ogni settimana in Hello Faces. Completatela insieme per allungare la serie.", "seats": "{n} giocatori su 6 finora", "full": "Questa squadra è al completo (6 giocatori).", "notFound": "Link non trovato. Controlla il codice con il tuo amico.", "step1": "Scarica Hello Faces", "soon": "In arrivo su App Store e Google Play il 10 dicembre 2026.", "step2": "Poi tocca di nuovo questo link sul telefono. Oppure scrivi questo codice nell’app:", "whereLaugh": "Io → 😂 Passa la risata → Hai un codice risata?", "whereSquad": "Io → 🤝 Squadra → Hai un codice?", "copy": "Copia", "copied": "Copiato!", "openApp": "Apri in Hello Faces", "safety": "Hello Faces non ha chat. Gli amici vedono solo facce approvate, nomi dei giocatori ed emoji.", "loading": "Caricamento…", "offline": "Impossibile caricare ora. Controlla la connessione e riprova.", "what": "Cos’è Hello Faces? ›", "pageGone": "Questa pagina non esiste.", "home": "Vai alla home ›"}, "pt": {"laughTitle": "{name} passou uma risada para você! 😂", "someone": "Alguém", "laughBody": "Mantenha viva: abra no Hello Faces e capture uma cara do humor “{mood}” em 24 horas. Depois passe para até 3 amigos e veja-a viajar o mundo.", "reach": "Esta risada já chegou a {p} pessoas em {c} países.", "taken": "Alguém já abriu este link. Peça ao seu amigo para enviar um novo!", "expired": "Este link não foi aberto a tempo e parou de funcionar. Peça um novo ao seu amigo!", "squadTitle": "Você foi convidado para o esquadrão “{name}”! 🤝", "squadBody": "Um esquadrão tem de 2 a 6 jogadores que dividem uma missão por semana no Hello Faces. Completem juntos para aumentar a sequência.", "seats": "{n} de 6 jogadores até agora", "full": "Este esquadrão está cheio (6 jogadores).", "notFound": "Não encontramos este link. Confira o código com seu amigo.", "step1": "Baixe o Hello Faces", "soon": "Chega à App Store e ao Google Play em 10 de dezembro de 2026.", "step2": "Depois toque neste link de novo no celular. Ou digite este código no app:", "whereLaugh": "Eu → 😂 Passe a risada → Tem um código de risada?", "whereSquad": "Eu → 🤝 Esquadrão → Tem um código?", "copy": "Copiar", "copied": "Copiado!", "openApp": "Abrir no Hello Faces", "safety": "O Hello Faces não tem chat. Os amigos só veem caras aprovadas, nomes de jogadores e emoji.", "loading": "Carregando…", "offline": "Não foi possível carregar agora. Verifique sua conexão e tente de novo.", "what": "O que é o Hello Faces? ›", "pageGone": "Esta página não existe.", "home": "Ir para o início ›"}, "ja": {"laughTitle": "{name}から笑いが届いた！😂", "someone": "誰か", "laughBody": "Hello Facesで開いて、24時間以内に「{mood}」ムードの顔をキャッチしよう。そのあと3人まで渡して、笑いが世界を旅するのを見よう。", "reach": "この笑いは、これまでに{c}か国の{p}人に届きました。", "taken": "このリンクはすでに開かれています。友だちに新しいリンクを送ってもらおう！", "expired": "期限内に開かれなかったため、このリンクは使えません。友だちに新しいリンクを送ってもらおう！", "squadTitle": "スクワッド「{name}」に招待されました！🤝", "squadBody": "スクワッドは2〜6人のチーム。Hello Facesで毎週1つのミッションにみんなで挑み、連続記録を伸ばそう。", "seats": "現在 {n} / 6 人", "full": "このスクワッドは満員です（6人）。", "notFound": "このリンクが見つかりません。友だちとコードを確認してね。", "step1": "Hello Facesを入手", "soon": "2026年12月10日にApp StoreとGoogle Playで配信予定。", "step2": "そのあとスマホでもう一度このリンクをタップ。またはアプリでこのコードを入力：", "whereLaugh": "マイページ → 😂 笑いをつなごう → 笑いのコードを持ってる？", "whereSquad": "マイページ → 🤝 スクワッド → コードを持ってる？", "copy": "コピー", "copied": "コピーしました！", "openApp": "Hello Facesで開く", "safety": "Hello Facesにチャットはありません。見えるのは承認済みの顔、プレイヤー名、絵文字だけです。", "loading": "読み込み中…", "offline": "今は読み込めません。接続を確認して、もう一度お試しください。", "what": "Hello Facesとは？ ›", "pageGone": "このページは存在しません。", "home": "ホームへ ›"}}, "moods": {"en": {"joy": "Joy", "rage": "Rage", "shock": "Shock", "sorrow": "Sorrow", "mischief": "Mischief", "love": "Love", "smug": "Smug", "worry": "Worry"}, "fr": {"joy": "Joie", "rage": "Rage", "shock": "Choc", "sorrow": "Chagrin", "mischief": "Malice", "love": "Amour", "smug": "Fier", "worry": "Inquiet"}, "es": {"joy": "Alegría", "rage": "Furia", "shock": "Sorpresa", "sorrow": "Tristeza", "mischief": "Travesura", "love": "Amor", "smug": "Presumido", "worry": "Preocupación"}, "de": {"joy": "Freude", "rage": "Wut", "shock": "Schock", "sorrow": "Kummer", "mischief": "Unfug", "love": "Liebe", "smug": "Selbstgefällig", "worry": "Sorge"}, "it": {"joy": "Gioia", "rage": "Rabbia", "shock": "Shock", "sorrow": "Tristezza", "mischief": "Birbanteria", "love": "Amore", "smug": "Compiaciuto", "worry": "Ansia"}, "pt": {"joy": "Alegria", "rage": "Fúria", "shock": "Choque", "sorrow": "Tristeza", "mischief": "Travessura", "love": "Amor", "smug": "Convencido", "worry": "Preocupação"}, "ja": {"joy": "よろこび", "rage": "いかり", "shock": "びっくり", "sorrow": "かなしみ", "mischief": "いたずら", "love": "ラブ", "smug": "ドヤ顔", "worry": "しんぱい"}}};
+
+// ---- Language: the phone's, else English ----
+const LANG = (() => {
+  for (const l of (navigator.languages || [navigator.language || 'en'])) {
+    const k = String(l).slice(0, 2).toLowerCase();
+    if (I18N.words[k]) return k;
+  }
+  return 'en';
+})();
+document.documentElement.lang = LANG;
+const W = I18N.words[LANG];
+const t = (k, v = {}) => (W[k] || I18N.words.en[k] || k).replace(/\{(\w+)\}/g, (_, n) => (v[n] ?? ''));
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const app = document.getElementById('app');
+document.getElementById('loading').textContent = t('loading');
+
+async function rpc(fn, args) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+    method: 'POST',
+    headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify(args),
+  });
+  if (!r.ok) throw new Error(String(r.status));
+  return r.json();
+}
+
+function stores() {
+  const btns = [];
+  if (APP_STORE_URL) btns.push(`<a class="btn solid" href="${APP_STORE_URL}"> App Store</a>`);
+  if (PLAY_URL) btns.push(`<a class="btn solid" href="${PLAY_URL}">▶ Google Play</a>`);
+  return btns.length ? `<div class="row">${btns.join('')}</div>` : `<p class="muted">${esc(t('soon'))}</p>`;
+}
+
+function steps(kind, code) {
+  return `<div class="card">
+    <div class="step"><span class="num">1</span><div><strong>${esc(t('step1'))}</strong>${stores()}</div></div>
+    <div class="step"><span class="num">2</span><div>${esc(t('step2'))}</div></div>
+    <div class="code" id="code">${esc(code)}</div>
+    <p class="where">${esc(kind === 'l' ? t('whereLaugh') : t('whereSquad'))}</p>
+    <div class="row">
+      <button class="btn" id="copy" type="button">📋 ${esc(t('copy'))}</button>
+      <a class="btn" href="hellofaces://${kind}/${esc(code)}">📱 ${esc(t('openApp'))}</a>
+    </div>
+  </div>
+  <p class="where">🛡️ ${esc(t('safety'))}</p>
+  <p class="center"><a href="/hello-faces/">${esc(t('what'))}</a></p>`;
+}
+
+function wireCopy(code) {
+  const b = document.getElementById('copy');
+  if (!b) return;
+  b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(code); b.textContent = '✅ ' + t('copied'); } catch (e) {}
+  });
+}
+
+function photoUrl(path) {
+  return path ? `${SUPABASE_URL}/storage/v1/object/public/faces/${encodeURI(path)}` : '';
+}
+
+async function showLaugh(code) {
+  let d = null;
+  try { d = await rpc('laugh_peek', { p_code: code }); } catch (e) { return message(t('offline')); }
+  if (!d) return message(t('notFound'));
+  const mood = I18N.moods[LANG][d.emotion] || I18N.moods.en[d.emotion] || d.emotion;
+  const color = MOOD_COLOR[d.emotion] || '#7B4DFF';
+  const f = d.face;
+  const img = f && f.photo_path ? `<img src="${photoUrl(f.photo_path)}" alt="${esc(f.name)}">` : esc((f && f.emoji) || MOOD_EMOJI[d.emotion] || '😂');
+  const name = d.sender ? d.sender : t('someone');
+  const s = d.stats || {};
+  let note = '';
+  if (d.status === 'expired') note = `<div class="note"><p>${esc(t('expired'))}</p></div>`;
+  else if (d.status !== 'waiting') note = `<div class="note"><p>${esc(t('taken'))}</p></div>`;
+  document.title = `Hello Faces · ${name}`;
+  app.innerHTML = `
+    <div class="face" style="border-color:${color}">${img}</div>
+    ${f && f.name ? `<p class="center" style="margin:0"><strong>“${esc(f.name)}”</strong></p>` : ''}
+    <span class="mood" style="background:${color}">${esc(mood)}</span>
+    <h1 class="center">${esc(t('laughTitle', { name }))}</h1>
+    ${note || `<p class="lead center">${esc(t('laughBody', { mood }))}</p>`}
+    ${s.people > 1 ? `<p class="center muted">${esc(t('reach', { p: s.people, c: Math.max(1, s.countries || 0) }))}</p>` : ''}
+    ${note ? '' : steps('l', code)}`;
+  wireCopy(code);
+}
+
+async function showSquad(code) {
+  let d = null;
+  try { d = await rpc('squad_peek', { p_code: code }); } catch (e) { return message(t('offline')); }
+  if (!d) return message(t('notFound'));
+  document.title = `Hello Faces · ${d.name}`;
+  app.innerHTML = `
+    <div class="face" style="border-color:var(--grape)">🤝</div>
+    <h1 class="center">${esc(t('squadTitle', { name: d.name }))}</h1>
+    <p class="lead center">${esc(t('squadBody'))}</p>
+    <p class="center"><strong>${esc(d.full ? t('full') : t('seats', { n: d.members }))}</strong></p>
+    ${d.full ? '' : steps('s', code)}`;
+  wireCopy(code);
+}
+
+function message(text) {
+  app.innerHTML = `<div class="face" style="border-color:var(--line)">🙈</div><p class="lead center">${esc(text)}</p><p class="center"><a href="/hello-faces/">${esc(t('what'))}</a></p>`;
+}
+
+const m = location.pathname.match(/^\/(l|s)\/([A-Za-z0-9]{6})\/?$/);
+if (m) {
+  const code = m[2].toUpperCase();
+  (m[1] === 'l' ? showLaugh(code) : showSquad(code));
+} else {
+  app.innerHTML = `<div class="face" style="border-color:var(--line)">🙈</div><h1 class="center">${esc(t('pageGone'))}</h1><p class="center"><a href="/">${esc(t('home'))}</a></p>`;
+}
+</script>
+</body>
+</html>
