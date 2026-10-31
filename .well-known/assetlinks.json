@@ -7,8 +7,7 @@
       "namespace": "android_app",
       "package_name": "com.jamespayne.hellofaces",
       "sha256_cert_fingerprints": [
-        "EAS_KEYSTORE_SHA256",
-        "PLAY_APP_SIGNING_SHA256"
+        "23:EB:8E:FE:62:8A:EF:2B:18:C4:5A:26:33:CE:00:4F:7C:F6:01:B0:A9:36:43:EA:0F:C1:C8:D6:9B:68:4E:B9"
       ]
     }
   }

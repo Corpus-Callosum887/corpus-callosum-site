@@ -12,3 +12,8 @@ Custom domain: corpuscallosum.studio (set by the CNAME file).
   open those links straight in the app when it's installed. Replace YOUR_TEAM_ID and the two
   SHA-256 fingerprints before pushing.
 - `.nojekyll` makes GitHub Pages serve the `.well-known` folder.
+
+## v08
+- Apple Team ID filled in (976GTMMFA5). Android: EAS upload-key fingerprint filled in. Add Google Play's app-signing fingerprint (Play Console → App integrity) once the app is on Google Play.
+- /1/CODE also opens a laugh (a typed 1 looks like a lowercase L).
+- "2 people" instead of "2 people in 1 countries".

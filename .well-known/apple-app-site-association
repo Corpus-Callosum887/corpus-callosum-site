@@ -3,12 +3,16 @@
     "details": [
       {
         "appIDs": [
-          "YOUR_TEAM_ID.com.jamespayne.hellofaces"
+          "976GTMMFA5.com.jamespayne.hellofaces"
         ],
         "components": [
           {
             "/": "/l/*",
             "comment": "Pass the Laugh links"
+          },
+          {
+            "/": "/1/*",
+            "comment": "Laugh links typed with a 1 instead of an l"
           },
           {
             "/": "/s/*",
